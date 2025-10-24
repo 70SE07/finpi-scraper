@@ -243,6 +243,41 @@ def main():
     
     print(f"\nОБЩИЙ ИТОГ: {total_products} товаров")
     print(f"Результаты сохранены в папке output/")
+    
+    # Автоматическая очистка после парсинга
+    print(f"\n{'='*60}")
+    print("🧹 АВТОМАТИЧЕСКАЯ ОЧИСТКА ТОВАРОВ")
+    print(f"{'='*60}")
+    
+    try:
+        from clean_products import clean_file
+        import glob
+        
+        # Находим все файлы с товарами
+        output_dir = "output"
+        pattern = os.path.join(output_dir, "**", "*.txt")
+        files = glob.glob(pattern, recursive=True)
+        
+        if files:
+            print(f"📁 Найдено файлов для очистки: {len(files)}")
+            success_count = 0
+            
+            for file_path in files:
+                print(f"🧹 Очищаю: {file_path}")
+                if clean_file(file_path):
+                    success_count += 1
+            
+            print(f"\n✅ ОЧИСТКА ЗАВЕРШЕНА!")
+            print(f"   Успешно обработано: {success_count} файлов")
+            print(f"   Ошибок: {len(files) - success_count} файлов")
+        else:
+            print("❌ Файлы для очистки не найдены")
+            
+    except ImportError:
+        print("⚠️ Модуль очистки не найден. Запустите clean_products.py вручную")
+    except Exception as e:
+        print(f"❌ Ошибка при автоматической очистке: {e}")
+        print("💡 Запустите clean_products.py вручную для очистки товаров")
 
 if __name__ == "__main__":
     main()
