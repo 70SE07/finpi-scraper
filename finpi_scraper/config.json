@@ -30,5 +30,16 @@
     "pagination_template": "?page={page}",
     "needs_scrolling": true,
     "js_rendering": false
+  },
+  {
+    "site_name": "rost",
+    "category_name": "whisky",
+    "url": "https://rostmarket.com.ua/viski/",
+    "category_path": "GOODS/GROCERIES/BEVERAGES",
+    "target_count": 30,
+    "product_name_selector": ".product-item-link",
+    "pagination_template": "?page={page}",
+    "needs_scrolling": false,
+    "js_rendering": false
   }
 ]
