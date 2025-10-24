@@ -1,0 +1,65 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        cd finpi_scraper
+        pip install -r requirements.txt
+    
+    - name: Generate documentation
+      run: |
+        mkdir -p docs
+        echo "# FinPi Scraper Documentation" > docs/index.md
+        echo "" >> docs/index.md
+        echo "## Latest Results" >> docs/index.md
+        echo "" >> docs/index.md
+        echo "### Scraping Statistics" >> docs/index.md
+        echo "" >> docs/index.md
+        echo "| Site | Category | Products | Last Updated |" >> docs/index.md
+        echo "|------|----------|----------|--------------|" >> docs/index.md
+        echo "| Rost | Alcohol | 0 | $(date) |" >> docs/index.md
+        echo "| Rozetka | Alcohol | 0 | $(date) |" >> docs/index.md
+        echo "| Tesco | Alcohol | 0 | $(date) |" >> docs/index.md
+    
+    - name: Setup Pages
+      uses: actions/configure-pages@v3
+    
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v2
+      with:
+        path: docs
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v2
