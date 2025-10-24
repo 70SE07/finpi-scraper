@@ -40,6 +40,25 @@ def create_category_folders(category_path):
     
     return full_path
 
+def load_existing_products(output_filename):
+    """
+    Загружает уже существующие товары из файла для инкрементального парсинга.
+    Возвращает список существующих товаров.
+    """
+    if not os.path.exists(output_filename):
+        print(f"Файл {output_filename} не существует. Начинаю с нуля.")
+        return []
+    
+    try:
+        with open(output_filename, 'r', encoding='utf-8') as f:
+            existing_products = [line.strip() for line in f.readlines() if line.strip()]
+        
+        print(f"📁 Найдено {len(existing_products)} существующих товаров в файле")
+        return existing_products
+    except Exception as e:
+        print(f"❌ Ошибка чтения файла {output_filename}: {e}")
+        return []
+
 def parse_site_with_pagination(site_config):
     """
     Универсальная функция для парсинга сайта с пагинацией и контролем количества товаров.
@@ -61,7 +80,15 @@ def parse_site_with_pagination(site_config):
     filename = f"{site_name}_{category_name}.txt"
     output_filename = os.path.join(output_path, filename)
     
-    all_product_names = []
+    # Загружаем существующие товары для инкрементального парсинга
+    existing_products = load_existing_products(output_filename)
+    all_product_names = existing_products.copy()
+    
+    if existing_products:
+        print(f"🔄 Инкрементальный парсинг: продолжаю с {len(existing_products)} существующих товаров")
+        print(f"🎯 Цель: добрать до {target_count} товаров (нужно еще {target_count - len(existing_products)})")
+    else:
+        print(f"🆕 Новый парсинг: начинаю с нуля до {target_count} товаров")
     page = 1
     max_pages = 50  # Защита от бесконечного цикла
     
@@ -140,13 +167,15 @@ def parse_site_with_pagination(site_config):
         page += 1
         time.sleep(2)  # Пауза между запросами
     
-    # Сохраняем результаты
+    # Сохраняем результаты (перезаписываем файл с обновленным списком)
     with open(output_filename, 'w', encoding='utf-8') as f:
         for name in all_product_names:
             f.write(name + '\n')
     
-    print(f"--- Парсинг сайта {site_name} завершен. Найдено: {len(all_product_names)} товаров. ---")
-    print(f"Результаты сохранены в файл: {output_filename}")
+    new_products_count = len(all_product_names) - len(existing_products)
+    print(f"--- Парсинг сайта {site_name} завершен. ---")
+    print(f"📊 Всего товаров: {len(all_product_names)} (добавлено новых: {new_products_count})")
+    print(f"💾 Результаты сохранены в файл: {output_filename}")
     return all_product_names
 
 def main():
