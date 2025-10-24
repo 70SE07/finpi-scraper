@@ -4,7 +4,7 @@
     "category_name": "whisky",
     "url": "https://rozetka.com.ua/ua/viski/c4649130/",
     "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 30,
+    "target_count": 500,
     "product_name_selector": ".tile-title",
     "pagination_template": "/page={page}/",
     "needs_scrolling": true,
@@ -15,7 +15,7 @@
     "category_name": "whisky",
     "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/spirits/whisky",
     "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 30,
+    "target_count": 500,
     "product_name_selector": "._64Yvfa_titleContainer",
     "pagination_template": "?page={page}",
     "needs_scrolling": true
@@ -25,7 +25,7 @@
     "category_name": "vodka",
     "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/spirits/vodka",
     "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 30,
+    "target_count": 500,
     "product_name_selector": "._64Yvfa_titleContainer",
     "pagination_template": "?page={page}",
     "needs_scrolling": true,
@@ -36,10 +36,10 @@
     "category_name": "whisky",
     "url": "https://rostmarket.com.ua/viski/",
     "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 30,
+    "target_count": 500,
     "product_name_selector": ".product-item-link",
     "pagination_template": "?page={page}",
-    "needs_scrolling": false,
-    "js_rendering": false
+    "needs_scrolling": true,
+    "js_rendering": true
   }
 ]
