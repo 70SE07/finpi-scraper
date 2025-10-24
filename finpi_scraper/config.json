@@ -4,42 +4,38 @@
     "category_name": "whisky",
     "url": "https://rozetka.com.ua/ua/viski/c4649130/",
     "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 500,
-    "product_name_selector": ".tile-title",
+    "target_count": 200,
+    "product_name_selector": [".tile-title", ".product-title"],
     "pagination_template": "/page={page}/",
     "needs_scrolling": true,
-    "js_rendering": true
-  },
-  {
-    "site_name": "tesco",
-    "category_name": "whisky",
-    "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/spirits/whisky",
-    "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 500,
-    "product_name_selector": "._64Yvfa_titleContainer",
-    "pagination_template": "?page={page}",
-    "needs_scrolling": true
-  },
-  {
-    "site_name": "tesco",
-    "category_name": "vodka",
-    "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/spirits/vodka",
-    "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 500,
-    "product_name_selector": "._64Yvfa_titleContainer",
-    "pagination_template": "?page={page}",
-    "needs_scrolling": true,
-    "js_rendering": false
+    "js_rendering": true,
+    "country_code": "ua",
+    "enabled": true
   },
   {
     "site_name": "rost",
     "category_name": "whisky",
     "url": "https://rostmarket.com.ua/viski/",
     "category_path": "GOODS/GROCERIES/BEVERAGES",
-    "target_count": 500,
+    "target_count": 200,
     "product_name_selector": ".product-item-link",
+    "pagination_template": "?p={page}",
+    "needs_scrolling": true,
+    "js_rendering": true,
+    "country_code": "ua",
+    "enabled": true
+  },
+  {
+    "site_name": "tesco",
+    "category_name": "whisky",
+    "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/spirits/whisky",
+    "category_path": "GOODS/GROCERIES/BEVERAGES",
+    "target_count": 200,
+    "product_name_selector": "._64Yvfa_titleContainer",
     "pagination_template": "?page={page}",
     "needs_scrolling": true,
-    "js_rendering": true
+    "js_rendering": false,
+    "country_code": "gb",
+    "enabled": true
   }
 ]

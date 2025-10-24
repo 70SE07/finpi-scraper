@@ -8,7 +8,7 @@ import time
 def get_scraperapi_url(site_config, page_url=None):
     """
     Преобразует целевой URL в URL для запроса к ScraperAPI,
-    добавляя рендеринг JS при необходимости.
+    добавляя рендеринг JS и премиум-прокси при необходимости.
     """
     load_dotenv()
     api_key = os.getenv("SCRAPERAPI_KEY")
@@ -17,12 +17,16 @@ def get_scraperapi_url(site_config, page_url=None):
         return None
     
     target_url = page_url if page_url else site_config['url']
-    base_url = f'http://api.scraperapi.com?api_key={api_key}&url={target_url}&country_code=ua'
+    country = site_config.get('country_code', 'ua')
+    base_url = f'http://api.scraperapi.com?api_key={api_key}&url={target_url}&country_code={country}'
     
-    # Проверяем, нужно ли включать JS Rendering для этого сайта
     if site_config.get('js_rendering', False):
         print(f"[{site_config['site_name']}] Включаю JS Rendering.")
-        return f'{base_url}&render=true'
+        base_url += '&render=true'
+
+    if site_config['site_name'] == 'tesco':
+        print(f"[{site_config['site_name']}] Использую премиум прокси.")
+        base_url += '&premium=true&render_wait=5000'
     
     return base_url
 
@@ -125,7 +129,18 @@ def parse_site_with_pagination(site_config):
             
             html_content = response.text
             soup = BeautifulSoup(html_content, 'html.parser')
-            product_elements = soup.select(selector)
+
+            product_elements = []
+            # Если селектор - это список, пробуем каждый по очереди
+            if isinstance(selector, list):
+                for s in selector:
+                    product_elements = soup.select(s)
+                    if product_elements:
+                        print(f"[{site_name}] Использован селектор: '{s}'")
+                        break
+            else:
+                # Иначе работаем как обычно
+                product_elements = soup.select(selector)
             
             page_products = [elem.get_text(strip=True) for elem in product_elements if elem.get_text(strip=True)]
             
@@ -152,10 +167,7 @@ def parse_site_with_pagination(site_config):
             if len(all_product_names) >= target_count:
                 break
             
-            # Если на странице нет новых товаров, возможно, мы достигли конца
-            if not new_products:
-                print(f"[{site_name}] Новых товаров на странице {page} не найдено. Завершаю парсинг.")
-                break
+
                 
         except requests.exceptions.RequestException as e:
             print(f"[{site_name}] Ошибка сетевого запроса на странице {page}: {e}")
@@ -178,16 +190,36 @@ def parse_site_with_pagination(site_config):
     print(f"💾 Результаты сохранены в файл: {output_filename}")
     return all_product_names
 
+import sys
+
 def main():
     """
-    Основная функция для запуска парсеров для всех сайтов в конфиге.
+    Основная функция для запуска парсеров.
+    Можно передать имя сайта как аргумент командной строки, чтобы запустить парсер только для него.
+    Пример: python main.py rost
     """
     with open('config.json', 'r', encoding='utf-8') as f:
         configs = json.load(f)
+
+    # Фильтруем конфиги, если указано имя сайта в аргументах
+    if len(sys.argv) > 1:
+        target_site_name = sys.argv[1]
+        configs = [c for c in configs if c['site_name'] == target_site_name]
+        if not configs:
+            print(f"❌ Сайт '{target_site_name}' не найден в config.json.")
+            return
     
     all_results = {}
     
     for site_config in configs:
+        # Проверяем, включен ли сайт для парсинга
+        if not site_config.get('enabled', True):
+            print(f"\n{'='*60}")
+            print(f"ПРОПУСКАЮ: {site_config['site_name'].upper()} - {site_config['category_name'].upper()}")
+            print(f"ПРИЧИНА: Отключен в конфигурации (enabled: false)")
+            print(f"{'='*60}")
+            continue
+            
         site_name = site_config['site_name']
         category_name = site_config['category_name']
         target_count = site_config['target_count']
