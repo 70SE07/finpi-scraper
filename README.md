@@ -15,6 +15,10 @@
 - ✅ Универсальная конфигурация через JSON
 - ✅ Поддержка JavaScript-рендеринга для динамических сайтов
 - ✅ Автоматическая прокрутка страниц
+- ✅ **Автоматическая пагинация** - листание страниц для сбора большего количества товаров
+- ✅ **Контроль количества** - указывайте сколько товаров собрать (10, 110, 1010)
+- ✅ **Иерархия папок** - автоматическое создание структуры GOODS/GROCERIES/BEVERAGES
+- ✅ **Динамические имена файлов** - rozetka_whisky.txt, tesco_whisky.txt
 - ✅ Сохранение результатов в отдельные файлы
 - ✅ Обработка ошибок и логирование
 - ✅ Использование ScraperAPI для обхода блокировок
@@ -45,24 +49,46 @@ SCRAPERAPI_KEY=ваш_api_ключ_здесь
 python main.py
 ```
 
-Результаты будут сохранены в папке `output/` в формате:
-- `output_rozetka.txt`
-- `output_tesco.txt`
-- `output_rost.txt`
+Результаты будут сохранены в иерархической структуре папок:
+```
+output/
+├── GOODS/
+│   └── GROCERIES/
+│       └── BEVERAGES/
+│           ├── rozetka_whisky.txt
+│           └── tesco_whisky.txt
+```
 
 ## Конфигурация
 
 Файл `config.json` содержит настройки для каждого сайта:
 
 ```json
-{
-  "site_name": "название_сайта",
-  "url": "https://example.com",
-  "product_name_selector": ".css-selector",
-  "needs_scrolling": true/false,
-  "js_rendering": true/false
-}
+[
+  {
+    "site_name": "rozetka",
+    "category_name": "whisky",
+    "url": "https://rozetka.com.ua/ua/viski/c4649130/",
+    "category_path": "GOODS/GROCERIES/BEVERAGES",
+    "target_count": 1010,
+    "product_name_selector": ".tile-title",
+    "pagination_template": "/page={page}/",
+    "needs_scrolling": true,
+    "js_rendering": true
+  }
+]
 ```
+
+### Параметры конфигурации:
+- `site_name` - название сайта (для имени файла)
+- `category_name` - название категории (для имени файла)
+- `url` - URL страницы для парсинга
+- `category_path` - путь для создания папок (GOODS/GROCERIES/BEVERAGES)
+- `target_count` - количество товаров для сбора
+- `product_name_selector` - CSS селектор для названий товаров
+- `pagination_template` - шаблон для пагинации (/page={page}/ или ?page={page})
+- `needs_scrolling` - нужна ли прокрутка страницы
+- `js_rendering` - нужен ли рендеринг JavaScript
 
 ## Структура проекта
 

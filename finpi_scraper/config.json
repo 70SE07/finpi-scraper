@@ -1,21 +1,34 @@
 [
   {
     "site_name": "rozetka",
-    "url": "https://rozetka.com.ua/ua/krepkie-napitki/c4594292/",
+    "category_name": "whisky",
+    "url": "https://rozetka.com.ua/ua/viski/c4649130/",
+    "category_path": "GOODS/GROCERIES/BEVERAGES",
+    "target_count": 10,
     "product_name_selector": ".tile-title",
+    "pagination_template": "/page={page}/",
     "needs_scrolling": true,
     "js_rendering": true
   },
   {
     "site_name": "tesco",
-    "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/all",
+    "category_name": "whisky",
+    "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/spirits/whisky",
+    "category_path": "GOODS/GROCERIES/BEVERAGES",
+    "target_count": 10,
     "product_name_selector": "._64Yvfa_titleContainer",
+    "pagination_template": "?page={page}",
     "needs_scrolling": true
   },
   {
-    "site_name": "rost",
-    "url": "https://rostmarket.com.ua/",
-    "product_name_selector": ".product-item-link",
-    "needs_scrolling": false
+    "site_name": "tesco",
+    "category_name": "vodka",
+    "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/spirits/vodka",
+    "category_path": "GOODS/GROCERIES/BEVERAGES",
+    "target_count": 10,
+    "product_name_selector": "._64Yvfa_titleContainer",
+    "pagination_template": "?page={page}",
+    "needs_scrolling": true,
+    "js_rendering": false
   }
 ]
