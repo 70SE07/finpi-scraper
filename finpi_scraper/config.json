@@ -1,0 +1,21 @@
+[
+  {
+    "site_name": "rozetka",
+    "url": "https://rozetka.com.ua/ua/krepkie-napitki/c4594292/",
+    "product_name_selector": ".tile-title",
+    "needs_scrolling": true,
+    "js_rendering": true
+  },
+  {
+    "site_name": "tesco",
+    "url": "https://www.tesco.com/groceries/en-GB/shop/drinks/all",
+    "product_name_selector": "._64Yvfa_titleContainer",
+    "needs_scrolling": true
+  },
+  {
+    "site_name": "rost",
+    "url": "https://rostmarket.com.ua/",
+    "product_name_selector": ".product-item-link",
+    "needs_scrolling": false
+  }
+]
